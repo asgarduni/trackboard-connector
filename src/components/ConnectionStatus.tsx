@@ -3,7 +3,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 type ConnectionStatusProps = {
-  status: "disconnected" | "connecting" | "connected" | "error";
+  status: "disconnected" | "connecting" | "connected" | "error" | "monitoring";
   className?: string;
 };
 
@@ -20,6 +20,10 @@ const ConnectionStatus = ({ status, className }: ConnectionStatusProps) => {
     connected: {
       color: "bg-emerald-500",
       text: "Conectado",
+    },
+    monitoring: {
+      color: "bg-blue-500",
+      text: "Monitorando",
     },
     error: {
       color: "bg-red-500",
