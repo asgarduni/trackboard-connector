@@ -10,11 +10,11 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "./", // Altera a base para caminhos relativos para funcionar em qualquer subdiretório
+  base: "", // Alterado de "./" para "" para garantir que funcione em qualquer contexto
   build: {
     outDir: "dist", // Diretório onde os arquivos de build serão gerados
     emptyOutDir: true, // Limpa o diretório antes de construir
-    sourcemap: false, // Desativa sourcemaps em produção para diminuir o tamanho dos arquivos
+    sourcemap: true, // Ativado sourcemaps para ajudar na depuração
   },
   plugins: [
     react(),
