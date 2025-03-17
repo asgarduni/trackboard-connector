@@ -28,7 +28,7 @@ const Index = () => {
       
       {isLocal && (
         <div className="w-full max-w-4xl mb-4">
-          <Alert variant="info">
+          <Alert variant="default" className="bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Executando localmente</AlertTitle>
             <AlertDescription>
