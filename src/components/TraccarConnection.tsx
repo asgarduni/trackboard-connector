@@ -103,30 +103,28 @@ const TraccarConnection = () => {
       </CardHeader>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsHeader>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="connection" className="flex items-center gap-2">
-              <Wifi className="h-4 w-4" />
-              <span className="hidden sm:inline">Conexão</span>
-            </TabsTrigger>
-            <TabsTrigger value="devices" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              <span className="hidden sm:inline">Dispositivos</span>
-            </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span className="hidden sm:inline">Usuários</span>
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Configurações</span>
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              <span className="hidden sm:inline">Segurança</span>
-            </TabsTrigger>
-          </TabsList>
-        </TabsHeader>
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="connection" className="flex items-center gap-2">
+            <Wifi className="h-4 w-4" />
+            <span className="hidden sm:inline">Conexão</span>
+          </TabsTrigger>
+          <TabsTrigger value="devices" className="flex items-center gap-2">
+            <Activity className="h-4 w-4" />
+            <span className="hidden sm:inline">Dispositivos</span>
+          </TabsTrigger>
+          <TabsTrigger value="users" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            <span className="hidden sm:inline">Usuários</span>
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            <span className="hidden sm:inline">Configurações</span>
+          </TabsTrigger>
+          <TabsTrigger value="security" className="flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            <span className="hidden sm:inline">Segurança</span>
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent value="connection" className="space-y-4 p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,9 +200,8 @@ const TraccarConnection = () => {
               <Button
                 onClick={handleConnect}
                 className="transition-all"
-                disabled={connectionStatus === "connecting"}
               >
-                {connectionStatus === "connecting" ? "Conectando..." : "Conectar"}
+                Conectar
               </Button>
             )}
             
