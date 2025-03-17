@@ -10,11 +10,20 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "", // Alterado de "./" para "" para garantir que funcione em qualquer contexto
+  base: "", // Configurado para funcionar em qualquer contexto, incluindo XAMPP
   build: {
     outDir: "dist", // Diretório onde os arquivos de build serão gerados
     emptyOutDir: true, // Limpa o diretório antes de construir
-    sourcemap: true, // Ativado sourcemaps para ajudar na depuração
+    sourcemap: true, // Mantido para facilitar depuração
+    // Garantindo que todos os recursos sejam relativos
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/[name].[hash].js",
+        chunkFileNames: "assets/[name].[hash].js",
+        assetFileNames: "assets/[name].[hash].[ext]"
+      }
+    }
   },
   plugins: [
     react(),
