@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +8,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import ConnectionStatus from "./ConnectionStatus";
-import { Server, Database, Key, Wifi, Users, Activity, Settings, Shield, BarChart } from "lucide-react";
+import { Server, Database, Key, Wifi, Users, Activity, Settings, Shield, BarChart, AlertCircle } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type ConnectionState = "disconnected" | "connecting" | "connected" | "error" | "monitoring";
 
@@ -21,6 +21,7 @@ const TraccarConnection = () => {
   const [username, setUsername] = useState("root");
   const [password, setPassword] = useState("root");
   const [connectionStatus, setConnectionStatus] = useState<ConnectionState>("disconnected");
+  const [connectionError, setConnectionError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("connection");
   const [devices, setDevices] = useState([
@@ -39,6 +40,18 @@ const TraccarConnection = () => {
     sslEnabled: false
   });
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log("Application initialized in web environment");
+      
+      if (window.location.protocol === 'file:') {
+        setConnectionError(
+          "Aplicação aberta diretamente como arquivo. Por favor, acesse através do servidor web (XAMPP/Apache)."
+        );
+      }
+    }
+  }, []);
+
   const handleConnect = () => {
     if (!serverUrl.trim()) {
       toast({
@@ -50,15 +63,56 @@ const TraccarConnection = () => {
     }
 
     setConnectionStatus("connecting");
+    setConnectionError(null);
     
-    // Simulação da conexão (em uma aplicação real, isso seria uma requisição)
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
+      if (connectionStatus === "connecting") {
+        setConnectionStatus("error");
+        setConnectionError("Tempo de conexão esgotado. Verifique se o servidor está acessível e se não há problemas de CORS.");
+        toast({
+          title: "Erro de conexão",
+          description: "Não foi possível conectar ao servidor no tempo esperado",
+          variant: "destructive",
+        });
+      }
+    }, 5000);
+    
+    fetch(`${serverUrl}/api/session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: username,
+        password: password
+      })
+    })
+    .then(response => {
+      clearTimeout(timeoutId);
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`Erro de autenticação: ${response.status}`);
+      }
+    })
+    .then(data => {
       setConnectionStatus("connected");
       toast({
         title: "Conexão estabelecida",
         description: "Você está conectado ao servidor Traccar",
       });
-    }, 1500);
+    })
+    .catch(error => {
+      clearTimeout(timeoutId);
+      console.error("Erro na conexão:", error);
+      setConnectionStatus("error");
+      setConnectionError(`Erro na conexão: ${error.message}`);
+      toast({
+        title: "Erro na conexão",
+        description: error.message,
+        variant: "destructive",
+      });
+    });
   };
 
   const handleDisconnect = () => {
@@ -101,6 +155,16 @@ const TraccarConnection = () => {
         </div>
         <ConnectionStatus status={connectionStatus} />
       </CardHeader>
+
+      {connectionError && (
+        <div className="px-4 pb-2">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Erro de conexão</AlertTitle>
+            <AlertDescription>{connectionError}</AlertDescription>
+          </Alert>
+        </div>
+      )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-5">
