@@ -13,6 +13,7 @@ const Index = () => {
         window.location.hostname === '127.0.0.1') {
       setIsLocal(true);
     }
+    console.log("Application initialized with hostname:", window.location.hostname);
   }, []);
 
   return (
