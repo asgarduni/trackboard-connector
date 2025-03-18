@@ -22,7 +22,7 @@ Este guia explica como configurar e executar o projeto no servidor local XAMPP.
    ```
    npm run build
    ```
-   Isso criará uma pasta `dist` com os arquivos compilados.
+   Isso criará uma pasta `dist` com os arquivos JavaScript compilados.
 
 ### 2. Configurar no XAMPP
 
@@ -36,6 +36,15 @@ Este guia explica como configurar e executar o projeto no servidor local XAMPP.
 
 1. Abra seu navegador
 2. Acesse o endereço: `http://localhost/trackboard-connector`
+
+## Processo de Compilação
+
+Durante o processo de compilação (npm run build):
+
+1. Os arquivos TypeScript (.ts/.tsx) são compilados para JavaScript
+2. O código é otimizado e minificado
+3. Os recursos são empacotados com caminhos relativos
+4. Todos os arquivos são gerados na pasta `dist`
 
 ## Solução de Problemas
 

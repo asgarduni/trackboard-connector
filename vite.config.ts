@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => ({
     sourcemap: true, // Mantido para facilitar depuração
     // Garantindo que todos os recursos sejam relativos
     assetsDir: "assets",
+    minify: true, // Minificar os arquivos JavaScript
+    target: 'es2015', // Configurar o target para JavaScript mais compatível
     rollupOptions: {
       output: {
         entryFileNames: "assets/[name].[hash].js",
@@ -34,5 +36,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  esbuild: {
+    jsxInject: `import React from 'react'`,
   },
 }));
